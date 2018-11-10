@@ -21,6 +21,27 @@ function ($scope, $stateParams, $state) {
     $state.go('packageDetails', {obj:record});
   };
 
+  $scope.checkout = function() {
+    var lis = [];
+    angular.forEach($scope.records, function(value, key) {
+
+    var referenceId = new Date().getTime();
+
+    if(parseInt(value.count) > 0) {
+      for(a = 0; a<value.count; a++) {
+      var refNo = referenceId++;
+      firebase.database().ref('bookings/' + refNo).set({
+          package: key,
+          reference_no: refNo,
+          status : "paid"
+        });
+      }
+    }
+ 
+    });
+
+  };
+
 
 	return firebase.database().ref('/packages/').once('value').then(function(snapshot) {
 		$scope.records = snapshot.val();
@@ -33,7 +54,6 @@ function ($scope, $stateParams, $state) {
 
 		});
 	});
-
  
 
 }])
