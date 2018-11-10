@@ -1,0 +1,14 @@
+<ion-view title="Packages" id="page3">
+  <ion-content padding="true" class="has-header">
+    <h3 id="packages-heading1" style="color:#000000;">Please select package</h3>
+    <ion-list id="packages-list4" ng-repeat="record in records">
+      <ion-item class="item-thumbnail-left item-icon-right" id="packages-list-item21">
+      <image ng-cloak ng-src="{{record.public_image}}" width="42" height="42"></image>
+        <h2 ng-bind="record.name"></h2>
+        <p style="white-space:normal;" ng-bind="record.price"></p>
+        <i class="icon ion-information"></i>
+        <ion-option-button class="button-positive"></ion-option-button>
+      </ion-item>
+    </ion-list>
+   </ion-content>
+</ion-view>

@@ -9,7 +9,7 @@ angular.module('app.routes', [])
   $stateProvider
   .state('packages', {
     url: '/page3',
-    templateUrl: 'templates/packages.html',
+    templateUrl: 'templates/package_selection.html',
     controller: 'packageCtrlr'
   })
 
