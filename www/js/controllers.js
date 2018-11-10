@@ -117,6 +117,15 @@ function ($scope, $stateParams) {
 .controller('packageDetailsCtrlr', ['$scope', '$stateParams',
 function ($scope, $stateParams) {
   $scope.record = $stateParams.obj;
+  $scope.increment = function(record) {
+  if(record.count == 5) return;
+    record.count++;
+  };
+
+  $scope.decrement = function(record) {
+    if(record.count == 0) return;
+    record.count--;
+  };
 }])
 
 .controller('cartCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
