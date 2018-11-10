@@ -1,9 +1,16 @@
-angular.module('app.controllers', [])
+angular.module('app.controllers', ['firebase'])
   
-.controller('assocHomePageCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+.controller('assocHomePageCtrlr', ['$scope', '$stateParams', '$state',
+function ($scope, $stateParams, $state) {
+  $scope.onViewBiddables = function () {
+  firebase.database().ref('/bookings').once('value').then(function(snapshot) {
+    var biddables = snapshot.val();
+    $scope.biddables = biddables.filter(function (biddable) {
+        return biddable.status === 'paid';
+    });
 
-
+    $state.go('biddableItems');
+    // return statusPaidOnly;
+  });
+}
 }])
