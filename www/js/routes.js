@@ -40,7 +40,10 @@ angular.module('app.routes', [])
   .state('packageDetails', {
     url: '/page9',
     templateUrl: 'templates/packageDetails.html',
-    controller: 'packageDetailsCtrlr'
+    controller: 'packageDetailsCtrlr',
+    params: {
+        obj: null
+    }
   })
 
   .state('cart', {

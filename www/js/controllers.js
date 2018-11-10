@@ -1,9 +1,7 @@
 angular.module('app.controllers', ['firebase'])
 
-.controller('packageCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+.controller('packageCtrlr', ['$scope', '$stateParams', '$state',
+function ($scope, $stateParams, $state) {
 	var database = firebase.database();
 	var storage = firebase.storage();
 	var storageRef = firebase.storage().ref();
@@ -17,6 +15,10 @@ function ($scope, $stateParams) {
   $scope.decrement = function(record) {
     if(record.count == 0) return;
     record.count--;
+  };
+
+  $scope.viewDetail = function(record) {
+    $state.go('packageDetails', {obj:record});
   };
 
 
@@ -75,12 +77,9 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('packageDetailsCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
+.controller('packageDetailsCtrlr', ['$scope', '$stateParams',
 function ($scope, $stateParams) {
-
-
+  $scope.record = $stateParams.obj;
 }])
 
 .controller('cartCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
