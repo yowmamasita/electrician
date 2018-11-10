@@ -173,15 +173,25 @@ function ($scope, $stateParams, $state) {
     angular.forEach($scope.items, function(item) {
         var foundPackage = firebase.database().ref('/packages/' + item.package).once('value').then(function(snapshot) {
             item.package = snapshot.val();
-          });
+        });
     });
+    $scope.loadPdp = function(booking) {
+        $state.go('biddableDetailPage', {items: booking});
+    }
 }])
 
-.controller('biddableDetailPageCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('biddableDetailPageCtrlr', ['$scope', '$stateParams', '$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+function ($scope, $stateParams, $state) {
+    $scope.booking = $stateParams.items;
+    console.log('booking', $scope.booking);
+    var foundBidders = firebase.database().ref('/bids/' + $stateParams.items.reference_no).once('value').then(function(snapshot) {
+        $scope.bidders = snapshot.val();
+        console.log(snapshot.val());
+    });
 
+    console.log($scope.bidders);
 
 }])
 

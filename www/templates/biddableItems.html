@@ -3,10 +3,11 @@
     <ion-list id="biddableItems-list9">
       <ion-item class="item-thumbnail-left" 
                 id="biddableItems-list-item36"
-                ng-repeat="biddable in items">
+                ng-repeat="biddable in items"
+                ng-click="loadPdp(biddable)">
         <h2>Ref#: {{biddable.reference_no}}</h2>
         <p style="white-space:normal;">{{biddable.package.name}}
-          <br>P{{biddable.package.price | number}}</p>
+          <br>{{biddable.package.price | number | peso}}</p>
         <ion-option-button class="button-positive"></ion-option-button>
       </ion-item>
     </ion-list>

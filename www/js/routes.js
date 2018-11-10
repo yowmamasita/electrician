@@ -102,7 +102,10 @@ angular.module('app.routes', [])
   .state('biddableDetailPage', {
     url: '/page20',
     templateUrl: 'templates/biddableDetailPage.html',
-    controller: 'biddableDetailPageCtrlr'
+    controller: 'biddableDetailPageCtrlr',
+    params: {
+      items: null
+    }
   })
 
   .state('placeBid', {
