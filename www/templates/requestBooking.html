@@ -1,0 +1,16 @@
+<ion-view title="Request Booking" id="page8">
+  <ion-content padding="true" class="has-header">
+    <form id="requestBooking-form2" class="list">
+      <label class="item item-input" id="requestBooking-search1">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="search" placeholder="Enter address">
+      </label>
+    </form>
+    <creator-map-component options="{&quot;draggable&quot;:false}" marker="true" location="Makati" zoom="18" style="display:block;position:relative;margin-left:-10px;width:calc(100% + 20px);height:70%;">
+      <ui-gmap-google-map ng-if="map.center" center="map.center" zoom="map.zoom" options="map.options">
+        <ui-gmap-marker coords="map.marker.coords" idkey="map.marker.id" options="map.marker.options"></ui-gmap-marker>
+      </ui-gmap-google-map>
+    </creator-map-component>
+    <button id="requestBooking-button3" class="button button-light icon ion-android-locate"></button>
+  </ion-content>
+</ion-view>
