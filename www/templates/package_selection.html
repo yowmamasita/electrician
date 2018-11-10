@@ -1,11 +1,12 @@
 <ion-view title="Packages" id="page3">
   <ion-content padding="true" class="has-header">
-    <h3 id="packages-heading1" style="color:#000000;">Please select package</h3>
+    <center><h4 id="packages-heading1" style="color:#000000;">Please select from packages</h4></center>
+    <br/>
     <ion-list id="packages-list4" ng-repeat="record in records">
       <ion-item class="item-thumbnail-left item-icon-right" id="packages-list-item21">
       <image ng-cloak ng-src="{{record.public_image}}" width="42" height="42"></image>
       <h2 ng-bind="record.name"></h2>
-      <p style="white-space:normal;" ng-bind="record.price"></p>
+      <p style="white-space:normal;" ng-bind="record.price | number| peso"></p>
       <br/>
       <p>
       <div class="incrementer">
@@ -23,8 +24,12 @@
           </span>
         </div>
       </div>
-      <i class="icon ion-ios-information-outline"></i>
+      <i class="icon ion-ios-information-outline" ng-click="viewDetail(record)"></i>
       </ion-item>
     </ion-list>
    </ion-content>
+   <div class="footer navbar-fixed-bottom">
+    <button id="placeBid-button11" class="button button-calm button-block" ng-click="checkout()">Checkout</button>
+   </div>
+
 </ion-view>

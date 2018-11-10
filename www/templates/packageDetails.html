@@ -1,14 +1,30 @@
 <ion-view title="Package Details" id="page9">
   <ion-content padding="true" class="has-header">
-    <h2 id="packageDetails-heading2" style="color:#000000;">Package A</h2>
-    <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
-      <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+    <center><h3 id="packageDetails-heading2" style="color:#000000;" ng-bind="record.name"></h3></center>
+    <br/>
+    <image ng-cloak ng-src="{{record.public_image}}" width="100%"></image>    
     </div>
-    <h5 id="packageDetails-heading3" style="color:#000000;">P5,000</h5>
+    <h5 id="packageDetails-heading3" style="color:#000000;" ng-bind="record.price | number | peso"></h5>
     <div id="packageDetails-markdown2" class="show-list-numbers-and-dots">
-      <p style="color:#000000;">Replace with description</p>
+      <p style="color:#000000;" ng-bind="record.description"></p>
     </div>
-    <button id="packageDetails-button5" class="button button-calm icon ion-ios-minus-empty"></button>
-    <button id="packageDetails-button6" class="button button-calm icon ion-ios-plus-empty"></button>
+      <div class="incrementer">
+        <div class="input-group" width="100">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-info btn-number" data-type="minus" data-field="quant[2]" ng-click="decrement(record)">
+              <span class="glyphicon glyphicon-minus"></span>
+            </button>
+          </span>
+          <input type="number" class="form-control input-number" min="0" max="5" ng-model="record.count">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-info btn-number" data-type="plus" ng-click="increment(record)">
+              <span class="glyphicon glyphicon-plus"></span>
+            </button>
+          </span>
+        </div>
+      </div>
   </ion-content>
+  <div class="footer navbar-fixed-bottom">
+    <button id="placeBid-button11" class="button button-calm button-block">Add to Cart</button>
+   </div>
 </ion-view>

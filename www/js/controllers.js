@@ -1,9 +1,7 @@
 angular.module('app.controllers', ['firebase'])
 
-.controller('packageCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+.controller('packageCtrlr', ['$scope', '$stateParams', '$state', '$cookies',
+function ($scope, $stateParams, $state, $cookies) {
 	var database = firebase.database();
 	var storage = firebase.storage();
 	var storageRef = firebase.storage().ref();
@@ -19,6 +17,32 @@ function ($scope, $stateParams) {
     record.count--;
   };
 
+  $scope.viewDetail = function(record) {
+    $state.go('packageDetails', {obj:record});
+  };
+
+  $scope.checkout = function() {
+    var lis = [];
+    angular.forEach($scope.records, function(value, key) {
+
+    var referenceId = new Date().getTime();
+
+    if(parseInt(value.count) > 0) {
+      for(a = 0; a<value.count; a++) {
+      var refNo = referenceId++;
+      firebase.database().ref('bookings/' + refNo).set({
+          package: key,
+          reference_no: refNo,
+          status : "paid",
+          user: $cookies.get('userId')
+        });
+      }
+    }
+ 
+    });
+
+  };
+
 
 	return firebase.database().ref('/packages/').once('value').then(function(snapshot) {
 		$scope.records = snapshot.val();
@@ -32,7 +56,7 @@ function ($scope, $stateParams) {
 		});
 	});
 
-
+ 
 
 }])
 
@@ -113,12 +137,18 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('packageDetailsCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
+.controller('packageDetailsCtrlr', ['$scope', '$stateParams',
 function ($scope, $stateParams) {
+  $scope.record = $stateParams.obj;
+  $scope.increment = function(record) {
+  if(record.count == 5) return;
+    record.count++;
+  };
 
-
+  $scope.decrement = function(record) {
+    if(record.count == 0) return;
+    record.count--;
+  };
 }])
 
 .controller('cartCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
@@ -199,15 +229,25 @@ function ($scope, $stateParams, $state) {
     angular.forEach($scope.items, function(item) {
         var foundPackage = firebase.database().ref('/packages/' + item.package).once('value').then(function(snapshot) {
             item.package = snapshot.val();
-          });
+        });
     });
+    $scope.loadPdp = function(booking) {
+        $state.go('biddableDetailPage', {items: booking});
+    }
 }])
 
-.controller('biddableDetailPageCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('biddableDetailPageCtrlr', ['$scope', '$stateParams', '$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+function ($scope, $stateParams, $state) {
+    $scope.booking = $stateParams.items;
+    console.log('booking', $scope.booking);
+    var foundBidders = firebase.database().ref('/bids/' + $stateParams.items.reference_no).once('value').then(function(snapshot) {
+        $scope.bidders = snapshot.val();
+        console.log(snapshot.val());
+    });
 
+    console.log($scope.bidders);
 
 }])
 
@@ -227,8 +267,8 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('loginCtrlr', ['$scope', '$stateParams', '$state',
-function ($scope, $stateParams, $state) {
+.controller('loginCtrlr', ['$scope', '$stateParams', '$state', '$cookies',
+function ($scope, $stateParams, $state, $cookies) {
   $scope.user = {userId: '', password: ''};
   var USER_TYPE = {
     CUSTOMER: 'customer',
@@ -242,6 +282,7 @@ function ($scope, $stateParams, $state) {
       var success = (user && user.password) && user.password === $scope.user.password;
       console.log(user);
       if (success && user.type === USER_TYPE.CUSTOMER) {
+        $cookies.put('userId', $scope.user.userId);
         $state.go('homePage', user);
       }
 

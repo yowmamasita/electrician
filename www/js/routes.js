@@ -46,7 +46,10 @@ angular.module('app.routes', [])
   .state('packageDetails', {
     url: '/page9',
     templateUrl: 'templates/packageDetails.html',
-    controller: 'packageDetailsCtrlr'
+    controller: 'packageDetailsCtrlr',
+    params: {
+        obj: null
+    }
   })
 
   .state('cart', {
@@ -99,7 +102,10 @@ angular.module('app.routes', [])
   .state('biddableDetailPage', {
     url: '/page20',
     templateUrl: 'templates/biddableDetailPage.html',
-    controller: 'biddableDetailPageCtrlr'
+    controller: 'biddableDetailPageCtrlr',
+    params: {
+      items: null
+    }
   })
 
   .state('placeBid', {
