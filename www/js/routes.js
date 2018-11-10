@@ -82,8 +82,12 @@ angular.module('app.routes', [])
   .state('biddableItems', {
     url: '/page19',
     templateUrl: 'templates/biddableItems.html',
-    controller: 'biddableItemsCtrlr'
+    controller: 'biddableItemsCtrlr',
+    params: {
+      items: null
+    }
   })
+  
 
   .state('biddableDetailPage', {
     url: '/page20',
