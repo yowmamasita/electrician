@@ -151,8 +151,7 @@ function ($scope, $stateParams, $state) {
       }
 
       if (success && user.type === USER_TYPE.ASSOC) {
-        // todo: redirect to assoc homepage
-        // $state.go('homePage');
+        $state.go('assocHomePage');
       }
     });
   }
