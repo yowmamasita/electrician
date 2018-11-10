@@ -1,7 +1,7 @@
 angular.module('app.controllers', ['firebase'])
 
-.controller('packageCtrlr', ['$scope', '$stateParams', '$state',
-function ($scope, $stateParams, $state) {
+.controller('packageCtrlr', ['$scope', '$stateParams', '$state', '$cookies',
+function ($scope, $stateParams, $state, $cookies) {
 	var database = firebase.database();
 	var storage = firebase.storage();
 	var storageRef = firebase.storage().ref();
@@ -33,7 +33,8 @@ function ($scope, $stateParams, $state) {
       firebase.database().ref('bookings/' + refNo).set({
           package: key,
           reference_no: refNo,
-          status : "paid"
+          status : "paid",
+          user: $cookies.get('userId')
         });
       }
     }
@@ -240,8 +241,8 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('loginCtrlr', ['$scope', '$stateParams', '$state',
-function ($scope, $stateParams, $state) {
+.controller('loginCtrlr', ['$scope', '$stateParams', '$state', '$cookies',
+function ($scope, $stateParams, $state, $cookies) {
   $scope.user = {userId: '', password: ''};
   var USER_TYPE = {
     CUSTOMER: 'customer',
@@ -255,6 +256,7 @@ function ($scope, $stateParams, $state) {
       var success = (user && user.password) && user.password === $scope.user.password;
       console.log(user);
       if (success && user.type === USER_TYPE.CUSTOMER) {
+        $cookies.put('userId', $scope.user.userId);
         $state.go('homePage', user);
       }
 
