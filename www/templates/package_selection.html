@@ -4,10 +4,26 @@
     <ion-list id="packages-list4" ng-repeat="record in records">
       <ion-item class="item-thumbnail-left item-icon-right" id="packages-list-item21">
       <image ng-cloak ng-src="{{record.public_image}}" width="42" height="42"></image>
-        <h2 ng-bind="record.name"></h2>
-        <p style="white-space:normal;" ng-bind="record.price"></p>
-        <i class="icon ion-information"></i>
-        <ion-option-button class="button-positive"></ion-option-button>
+      <h2 ng-bind="record.name"></h2>
+      <p style="white-space:normal;" ng-bind="record.price"></p>
+      <br/>
+      <p>
+      <div class="incrementer">
+        <div class="input-group" width="100">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-info btn-number"  data-type="minus" data-field="quant[2]">
+              <span class="glyphicon glyphicon-minus"></span>
+            </button>
+          </span>
+          <input type="number" class="form-control input-number" value="0" min="0" max="5">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-info btn-number" data-type="plus">
+              <span class="glyphicon glyphicon-plus"></span>
+            </button>
+          </span>
+        </div>
+      </div>
+      <i class="icon ion-ios-information-outline"></i>
       </ion-item>
     </ion-list>
    </ion-content>
