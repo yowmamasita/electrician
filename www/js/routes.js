@@ -45,7 +45,13 @@ angular.module('app.routes', [])
     controller: 'pageCtrl'
   })
 
-$urlRouterProvider.otherwise('/page3')
+  .state('login', {
+    url: '/loginpage',
+    templateUrl: 'templates/login.html',
+    controller: 'loginCtrl'
+  })
+
+$urlRouterProvider.otherwise('/loginpage')
 
 
 });
