@@ -8,16 +8,31 @@ function ($scope, $stateParams) {
 	var storage = firebase.storage();
 	var storageRef = firebase.storage().ref();
 
+
+  $scope.increment = function(record) {
+    if(record.count == 5) return;
+    record.count++;
+  };
+
+  $scope.decrement = function(record) {
+    if(record.count == 0) return;
+    record.count--;
+  };
+
+
 	return firebase.database().ref('/packages/').once('value').then(function(snapshot) {
 		$scope.records = snapshot.val();
 		angular.forEach($scope.records, function(value, key) {
-        	var imRef = storageRef.child(value.image);
-			imRef.getDownloadURL().then(function(url) {
-	  			value.public_image = url;
-  			});
+      var imRef = storageRef.child(value.image);
+      imRef.getDownloadURL().then(function(url) {
+    		value.public_image = url;
+        value.count = 0;
+		  });
 
 		});
 	});
+
+ 
 
 }])
 
