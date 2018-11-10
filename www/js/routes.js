@@ -7,12 +7,10 @@ angular.module('app.routes', [])
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-    
-
-      .state('packages', {
+  .state('packages', {
     url: '/page3',
     templateUrl: 'templates/packages.html',
-    controller: 'packagesCtrl'
+    controller: 'packageCtrlr'
   })
 
   .state('homePage', {
