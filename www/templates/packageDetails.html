@@ -4,7 +4,7 @@
     <br/>
     <image ng-cloak ng-src="{{record.public_image}}" width="100%"></image>    
     </div>
-    <h5 id="packageDetails-heading3" style="color:#000000;" ng-bind="record.price"></h5>
+    <h5 id="packageDetails-heading3" style="color:#000000;" ng-bind="record.price | number | peso"></h5>
     <div id="packageDetails-markdown2" class="show-list-numbers-and-dots">
       <p style="color:#000000;" ng-bind="record.description"></p>
     </div>
@@ -24,4 +24,7 @@
         </div>
       </div>
   </ion-content>
+  <div class="footer navbar-fixed-bottom">
+    <button id="placeBid-button11" class="button button-calm button-block">Add to Cart</button>
+   </div>
 </ion-view>
