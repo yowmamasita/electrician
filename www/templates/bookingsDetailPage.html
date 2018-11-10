@@ -1,13 +1,13 @@
 <ion-view title="Bookings Detail Page" id="page15">
   <ion-content padding="true" class="has-header">
     <div>
-      <img src="img/Wsr2WvdqTmwkU98hLRtd_photo-placeholder_9_orig.png" style="display:block;width:50%;height:auto;">
+      <img ng-src="{{booking.package.public_image}}" style="display:block;width:50%;height:auto;">
     </div>
     <div id="bookingsDetailPage-markdown4" class="show-list-numbers-and-dots">
-      <p style="color:#000000;">Package A</p>
+      <p style="color:#000000;">{{ booking.package.name }}</p>
     </div>
     <div id="bookingsDetailPage-markdown6" class="show-list-numbers-and-dots">
-      <p style="color:#000000;">Customer</p>
+      <p style="color:#000000;">{{ booking.customer.name_}}</p>
     </div>
     <form id="bookingsDetailPage-form6" class="list">
       <label class="item item-select" id="bookingsDetailPage-select1">

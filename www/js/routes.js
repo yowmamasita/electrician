@@ -31,6 +31,12 @@ angular.module('app.routes', [])
     controller: 'adminHomeCtrlr'
   })
 
+  .state('adminViewRequests', {
+    url: '/admin-view-requests',
+    templateUrl: 'templates/adminViewRequests.html',
+    controller: 'adminViewRequestsCtrlr'
+  })
+
   .state('requestBooking', {
     url: '/page8',
     templateUrl: 'templates/requestBooking.html',
@@ -73,7 +79,8 @@ angular.module('app.routes', [])
   .state('bookingsDetailPage', {
     url: '/page15',
     templateUrl: 'templates/bookingsDetailPage.html',
-    controller: 'bookingsDetailPageCtrlr'
+    controller: 'bookingsDetailPageCtrlr',
+    params: {booking: null}
   })
 
   .state('setBidding', {
@@ -85,8 +92,12 @@ angular.module('app.routes', [])
   .state('biddableItems', {
     url: '/page19',
     templateUrl: 'templates/biddableItems.html',
-    controller: 'biddableItemsCtrlr'
+    controller: 'biddableItemsCtrlr',
+    params: {
+      items: null
+    }
   })
+  
 
   .state('biddableDetailPage', {
     url: '/page20',

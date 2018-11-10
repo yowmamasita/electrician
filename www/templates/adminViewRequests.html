@@ -1,0 +1,19 @@
+<ion-view title="Customer Bookings" id="page19">
+  <ion-content padding="true" class="has-header">
+    <ion-list id="biddableItems-list9">
+      <ion-item class="item-thumbnail-left" ng-repeat="booking in bookings" ng-click="onBookingClick(booking)">
+        <image ng-cloak ng-src="{{booking.package.public_image}}" width="42" height="42"></image>
+        <h2 ng-bind="booking.reference_no"></h2>
+        <p style="white-space:normal;">
+          {{ booking.package.name }}
+        </p>
+        <p>
+          P {{ booking.package.price }}
+        </p>
+
+        <span class="{{booking.status}}">{{ booking.status }}</span>
+        <ion-option-button class="button-positive"></ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
