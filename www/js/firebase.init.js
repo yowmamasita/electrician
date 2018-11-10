@@ -2,13 +2,15 @@ angular.module('firebaseConfig', ['firebase'])
 
 .run(function(){
 
-  // Initialize Firebase
   var config = {
     apiKey: "AIzaSyA0poX0OvnsuUoSu_PapiY_Zrg7ED3WUdc",
     authDomain: "electricity-service.firebaseapp.com",
     databaseURL: "https://electricity-service.firebaseio.com",
+    projectId: "electricity-service",
     storageBucket: "electricity-service.appspot.com",
+    messagingSenderId: "252229121415"
   };
+
   firebase.initializeApp(config);
 
 })
