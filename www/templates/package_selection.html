@@ -11,13 +11,13 @@
       <div class="incrementer">
         <div class="input-group" width="100">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-info btn-number"  data-type="minus" data-field="quant[2]">
+            <button type="button" class="btn btn-info btn-number" data-type="minus" data-field="quant[2]" ng-click="decrement(record)">
               <span class="glyphicon glyphicon-minus"></span>
             </button>
           </span>
-          <input type="number" class="form-control input-number" value="0" min="0" max="5">
+          <input type="number" class="form-control input-number" min="0" max="5" ng-model="record.count">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-info btn-number" data-type="plus">
+            <button type="button" class="btn btn-info btn-number" data-type="plus" ng-click="increment(record)">
               <span class="glyphicon glyphicon-plus"></span>
             </button>
           </span>
