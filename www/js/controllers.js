@@ -32,7 +32,7 @@ function ($scope, $stateParams) {
 		});
 	});
 
- 
+
 
 }])
 
@@ -79,7 +79,8 @@ function ($scope, $stateParams, $state) {
 		  var booking = {
 		    reference_no: item.reference_no,
         status: item.status,
-        key: item.key
+        customer_id: item.user,
+        package_id: item.package
       };
 
 		  firebase.database().ref('/packages/' + item.package).once('value').then(function (snapshot) {
@@ -152,9 +153,33 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('bookingsDetailPageCtrlr', ['$scope', '$stateParams',
-function ($scope, $stateParams) {
+.controller('bookingsDetailPageCtrlr', ['$scope', '$stateParams', '$state',
+function ($scope, $stateParams, $state) {
   $scope.booking = $stateParams.booking;
+
+  $scope.statuses = [
+    'for inspection',
+    'bidding',
+    'processing permit',
+    'completed'
+  ];
+
+  $scope.selectedStatus = {status: null};
+
+  $scope.onUpdateBookingStatus = function () {
+    var updateBooking = {
+      reference_no: $scope.booking.reference_no,
+      package: $scope.booking.package_id,
+      user: $scope.booking.customer_id,
+      status: $scope.selectedStatus.status
+    };
+
+    firebase.database().ref().child("bookings").child($scope.booking.reference_no).update(updateBooking);
+
+    if ($scope.selectedStatus.status === 'bidding') {
+      $state.go('setBidding');// todo: pass booking ref_no
+    }
+  }
 
 }])
 

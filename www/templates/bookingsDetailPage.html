@@ -12,7 +12,9 @@
     <form id="bookingsDetailPage-form6" class="list">
       <label class="item item-select" id="bookingsDetailPage-select1">
         <span class="input-label">Select status</span>
-        <select></select>
+        <select ng-model="selectedStatus.status">
+          <option ng-repeat="status in statuses" value="{{status}}">{{status}}</option>
+        </select>
       </label>
     </form>
     <h5 id="bookingsDetailPage-heading6" style="color:#000000;">Bids</h5>
@@ -21,6 +23,6 @@
       <ion-item id="bookingsDetailPage-list-item34">Assoc 2</ion-item>
       <ion-item id="bookingsDetailPage-list-item35">Assoc 3</ion-item>
     </ion-list>
-    <button id="bookingsDetailPage-button18" class="button button-calm button-block">Save</button>
+    <button id="bookingsDetailPage-button18" class="button button-calm button-block" ng-click="onUpdateBookingStatus()">Save</button>
   </ion-content>
 </ion-view>
