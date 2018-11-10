@@ -21,6 +21,18 @@ angular.module('app.routes', [])
     controller: 'homePageCtrl'
   })
 
+  .state('assocHomePage', {
+    url: '/page18',
+    templateUrl: 'templates/assocHomePage.html',
+    controller: 'assocHomePageCtrl'
+  })
+
+  .state('adminHome', {
+    url: '/page12',
+    templateUrl: 'templates/adminHome.html',
+    controller: 'adminHomeCtrl'
+  })
+
   .state('requestBooking', {
     url: '/page8',
     templateUrl: 'templates/requestBooking.html',
@@ -39,8 +51,56 @@ angular.module('app.routes', [])
     controller: 'cartCtrl'
   })
 
-  .state('page', {
+  .state('success', {
     url: '/page11',
+    templateUrl: 'templates/success.html',
+    controller: 'successCtrl'
+  })
+
+  .state('adminPackages', {
+    url: '/page13',
+    templateUrl: 'templates/adminPackages.html',
+    controller: 'adminPackagesCtrl'
+  })
+
+  .state('pDPCRUD', {
+    url: '/page14',
+    templateUrl: 'templates/pDPCRUD.html',
+    controller: 'pDPCRUDCtrl'
+  })
+
+  .state('bookingsDetailPage', {
+    url: '/page15',
+    templateUrl: 'templates/bookingsDetailPage.html',
+    controller: 'bookingsDetailPageCtrl'
+  })
+
+  .state('setBidding', {
+    url: '/page16',
+    templateUrl: 'templates/setBidding.html',
+    controller: 'setBiddingCtrl'
+  })
+
+  .state('biddableItems', {
+    url: '/page19',
+    templateUrl: 'templates/biddableItems.html',
+    controller: 'biddableItemsCtrl'
+  })
+
+  .state('biddableDetailPage', {
+    url: '/page20',
+    templateUrl: 'templates/biddableDetailPage.html',
+    controller: 'biddableDetailPageCtrl'
+  })
+
+  .state('placeBid', {
+    url: '/page17',
+    templateUrl: 'templates/placeBid.html',
+    controller: 'placeBidCtrl'
+  })
+
+  .state('page', {
+    url: '/page21',
     templateUrl: 'templates/page.html',
     controller: 'pageCtrl'
   })
