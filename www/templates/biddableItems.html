@@ -1,22 +1,12 @@
 <ion-view title="Biddable Items" id="page19">
   <ion-content padding="true" class="has-header">
     <ion-list id="biddableItems-list9">
-      <ion-item class="item-thumbnail-left" id="biddableItems-list-item36">
-        <h2>Ref#: 1123</h2>
-        <p style="white-space:normal;">Package A
-          <br>P5,000</p>
-        <ion-option-button class="button-positive"></ion-option-button>
-      </ion-item>
-      <ion-item class="item-thumbnail-left" id="biddableItems-list-item37">
-        <h2>Ref#: 9987</h2>
-        <p style="white-space:normal;">Package A
-          <br>P5,000</p>
-        <ion-option-button class="button-positive"></ion-option-button>
-      </ion-item>
-      <ion-item class="item-thumbnail-left" id="biddableItems-list-item38">
-        <h2>Ref#: 2234</h2>
-        <p style="white-space:normal;">Package B
-          <br>P10,000</p>
+      <ion-item class="item-thumbnail-left" 
+                id="biddableItems-list-item36"
+                ng-repeat="biddable in items">
+        <h2>Ref#: {{biddable.reference_no}}</h2>
+        <p style="white-space:normal;">{{biddable.package.name}}
+          <br>P{{biddable.package.price | number}}</p>
         <ion-option-button class="button-positive"></ion-option-button>
       </ion-item>
     </ion-list>

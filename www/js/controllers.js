@@ -8,16 +8,31 @@ function ($scope, $stateParams) {
 	var storage = firebase.storage();
 	var storageRef = firebase.storage().ref();
 
+
+  $scope.increment = function(record) {
+    if(record.count == 5) return;
+    record.count++;
+  };
+
+  $scope.decrement = function(record) {
+    if(record.count == 0) return;
+    record.count--;
+  };
+
+
 	return firebase.database().ref('/packages/').once('value').then(function(snapshot) {
 		$scope.records = snapshot.val();
 		angular.forEach($scope.records, function(value, key) {
-        	var imRef = storageRef.child(value.image);
-			imRef.getDownloadURL().then(function(url) {
-	  			value.public_image = url;
-  			});
+      var imRef = storageRef.child(value.image);
+      imRef.getDownloadURL().then(function(url) {
+    		value.public_image = url;
+        value.count = 0;
+		  });
 
 		});
 	});
+
+ 
 
 }])
 
@@ -29,12 +44,17 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('assocHomePageCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
-
-
+.controller('assocHomePageCtrlr', ['$scope', '$stateParams', '$state',
+function ($scope, $stateParams, $state) {
+  $scope.onViewBiddables = function () {
+  firebase.database().ref('/bookings').once('value').then(function(snapshot) {
+    var biddables = snapshot.val();
+    var assocBiddables = biddables.filter(function (biddable) {
+            return biddable.status === 'paid';
+    });
+    $state.go('biddableItems', { items: assocBiddables});
+  });
+}
 }])
 
 .controller('adminHomeCtrlr', ['$scope', '$stateParams', '$state' ,
@@ -146,12 +166,16 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('biddableItemsCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('biddableItemsCtrlr', ['$scope', '$stateParams', '$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
-
-
+function ($scope, $stateParams, $state) {
+    $scope.items = $stateParams.items;
+    angular.forEach($scope.items, function(item) {
+        var foundPackage = firebase.database().ref('/packages/' + item.package).once('value').then(function(snapshot) {
+            item.package = snapshot.val();
+          });
+    });
 }])
 
 .controller('biddableDetailPageCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
