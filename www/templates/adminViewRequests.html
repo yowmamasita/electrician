@@ -8,7 +8,7 @@
           {{ booking.package.name }}
         </p>
         <p>
-          P {{ booking.package.price }}
+          P {{ booking.package.price | number | peso }}
         </p>
 
         <span class="{{booking.status}}">{{ booking.status }}</span>
