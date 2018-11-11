@@ -191,7 +191,7 @@ function ($scope, $stateParams) {
 .controller('bookingsDetailPageCtrlr', ['$scope', '$stateParams',
 function ($scope, $stateParams) {
   $scope.booking = $stateParams.booking;
-
+  $scope.user = $cookies.get('userId');
 }])
 
 .controller('setBiddingCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
@@ -217,18 +217,51 @@ function ($scope, $stateParams, $state) {
     }
 }])
 
-.controller('biddableDetailPageCtrlr', ['$scope', '$stateParams', '$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('biddableDetailPageCtrlr', ['$scope', '$stateParams', '$state', '$cookies',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $state) {
+function ($scope, $stateParams, $state, $cookies) {
     $scope.booking = $stateParams.items;
+    $scope.user = $cookies.get('userId');
+    console.log('user', $scope.user);
     console.log('booking', $scope.booking);
-    var foundBidders = firebase.database().ref('/bids/' + $stateParams.items.reference_no).once('value').then(function(snapshot) {
-        $scope.bidders = snapshot.val();
-        console.log(snapshot.val());
-    });
+    var foundBidders = function () {
+      firebase.database().ref('/bids/' + $stateParams.items.reference_no).once('value').then(function(snapshot) {
+        try {
+          $scope.booking.bidders = snapshot.val();
+        } catch(e) {
+          $scope.booking.bidders = [
+            {booking_id: "1541881527077", price: "9700", user: "assoc", winner: "pending"},
+            {booking_id: "1541881527077", price: "9700", user: "assoc_meralco", winner: "pending"}
+          ];
+        }
 
-    console.log($scope.bidders);
+        $scope.booking.bidders = [
+          {booking_id: "1541881527077", price: "9700", user: "assoc", winner: "pending"},
+          {booking_id: "1541881527077", price: "9600", user: "assoc_meralco", winner: "pending"}
+        ];
+
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+              var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+              return result * sortOrder;
+          }
+      }
+
+      var sorted = $scope.booking.bidders.sort(dynamicSort("price"));
+      console.log('sorted', sorted);
+        
+        console.log('bidders', $scope.booking.bidders);
+      });
+    }
+    foundBidders();
+  
+    console.log('asd',$scope.booking);
 
 }])
 
