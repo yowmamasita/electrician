@@ -86,7 +86,10 @@ angular.module('app.routes', [])
   .state('setBidding', {
     url: '/page16',
     templateUrl: 'templates/setBidding.html',
-    controller: 'setBiddingCtrlr'
+    controller: 'setBiddingCtrlr',
+    params: {
+      booking: null
+    }
   })
 
   .state('biddableItems', {
@@ -97,7 +100,7 @@ angular.module('app.routes', [])
       items: null
     }
   })
-  
+
 
   .state('biddableDetailPage', {
     url: '/page20',
