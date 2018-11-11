@@ -110,7 +110,8 @@ function ($scope, $stateParams, $state) {
 		  var booking = {
 		    reference_no: item.reference_no,
         status: item.status,
-        key: item.key
+        customer_id: item.user,
+        package_id: item.package
       };
 
 		  firebase.database().ref('/packages/' + item.package).once('value').then(function (snapshot) {
@@ -189,17 +190,97 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('bookingsDetailPageCtrlr', ['$scope', '$stateParams',
-function ($scope, $stateParams) {
+.controller('bookingsDetailPageCtrlr', ['$scope', '$stateParams', '$state', '$ionicLoading', '$timeout',
+function ($scope, $stateParams, $state, $ionicLoading, $timeout) {
   $scope.booking = $stateParams.booking;
-  $scope.user = $cookies.get('userId');
+
+  $scope.statuses = [
+    'for inspection',
+    'bidding',
+    'processing permit',
+    'completed'
+  ];
+
+  $scope.bids = [];
+
+  firebase.database().ref('/bids/').on('value', function(snapshot){
+    bidsObject = snapshot.val();
+
+    Object.keys(bidsObject).forEach(function(key,index) {
+      var bid = bidsObject[key];
+      if (bid.booking_id == $scope.booking.reference_no) {
+        firebase.database().ref('/user/' + bid.user).once('value').then(function (snapshot) {
+          bid['assoc_details'] = snapshot.val();
+        });
+        console.log(bid);
+        $scope.bids.push(bid);
+      }
+    });
+  });
+
+  $scope.selectedStatus = {status: null};
+
+  $scope.onUpdateBookingStatus = function () {
+    var updateBooking = {
+      reference_no: $scope.booking.reference_no,
+      package: $scope.booking.package_id,
+      user: $scope.booking.customer_id,
+      status: $scope.selectedStatus.status
+    };
+
+    firebase.database().ref().child("bookings").child($scope.booking.reference_no).update(updateBooking);
+
+    $ionicLoading.show({
+      template: 'Succesfully tag for ' + $scope.selectedStatus.status
+    });
+
+    $timeout(function () {
+      $ionicLoading.hide();
+    }, 3000);
+
+
+    if ($scope.selectedStatus.status === 'bidding') {
+      $state.go('setBidding', {booking: booking});// todo: pass booking ref_no
+    }
+  };
+
+  $scope.isBidding = function () {
+    return $scope.selectedStatus.status == 'bidding';
+  }
+
 }])
 
-.controller('setBiddingCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
+.controller('setBiddingCtrlr', ['$scope', '$stateParams',
 function ($scope, $stateParams) {
+  $scope.booking = $stateParams.booking;
+  $scope.bid_due = {
+    date: null, time: null
+  };
 
+  $scope.onSaveBidDate = function () {
+     var updateBooking = {
+      reference_no: $scope.booking.reference_no,
+      package: $scope.booking.package_id,
+      user: $scope.booking.customer_id,
+      status: $scope.selectedStatus.status,
+      bid_due: new Date($scope.bid_due.date + $scope.bid_due.time).toISOString()
+    };
+
+    firebase.database().ref().child("bookings").child($scope.booking.reference_no).update(updateBooking)
+      .then(function () {
+        $ionicLoading.show({
+          template: 'Bidding is started'
+        });
+
+        $timeout(function () {
+          $ionicLoading.hide();
+        }, 3000);
+
+        booking['bid_due'] = updateBooking.bid_due;
+
+        $state.go('bookingsDetailsPage', {booking: booking});
+      });
+  }
 
 }])
 
