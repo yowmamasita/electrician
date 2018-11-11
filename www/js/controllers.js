@@ -71,7 +71,7 @@ function ($scope, $stateParams, $state) {
 .controller('assocHomePageCtrlr', ['$scope', '$stateParams', '$state',
 function ($scope, $stateParams, $state) {
   $scope.onViewBiddables = function () {
-  firebase.database().ref('/bookings').once('value').then(function(snapshot) {
+  firebase.database().ref('/bookings').on('value', function(snapshot) {
     var biddables = snapshot.val();
     try {
         var assocBiddables = biddables.filter(function (biddable) {
@@ -83,6 +83,11 @@ function ($scope, $stateParams, $state) {
             1541881527078: {package: "pA", reference_no: 1541881527078, status: "bidding", user: "customer1"}
         }
     }
+
+    var assocBiddables = {
+      1541881527077: {package: "pA", reference_no: 1541881527077, status: "paid", user: "customer1"}, 
+      1541881527078: {package: "pA", reference_no: 1541881527078, status: "bidding", user: "customer1"}
+  }
     $state.go('biddableItems', { items: assocBiddables});
   });
 }
@@ -103,7 +108,7 @@ function ($scope, $stateParams, $state) {
 function ($scope, $stateParams, $state) {
   $scope.bookings = [];
 
-  firebase.database().ref('/bookings/').once('value').then(function(snapshot) {
+  firebase.database().ref('/bookings/').on('value', function(snapshot) {
 		var items = snapshot.val();
 		angular.forEach(items, function (item){
 
