@@ -19,6 +19,13 @@ angular.module('app.routes', [])
     controller: 'homePageCtrlr'
   })
 
+  .state('customerRequests', {
+    url: '/customerRequests',
+    templateUrl: 'templates/customerRequests.html',
+    controller: 'customerRequestsCtrlr'
+  })
+
+
   .state('assocHomePage', {
     url: '/page18',
     templateUrl: 'templates/assocHomePage.html',

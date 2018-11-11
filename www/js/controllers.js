@@ -65,6 +65,10 @@ function ($scope, $stateParams, $state) {
     $state.go('packages');
   };
 
+  $scope.viewBookings = function() {
+    $state.go('customerRequests');
+  };
+
 
 }])
 
@@ -410,4 +414,25 @@ function ($scope, $stateParams, $state, $cookies) {
       }
     });
   }
+}])
+
+
+.controller('customerRequestsCtrlr', ['$scope', '$stateParams', '$state', '$cookies',
+  function ($scope, $stateParams, $state, $cookies) {
+    $scope.lists = [];
+    var storage = firebase.storage();
+    var storageRef = firebase.storage().ref();
+
+    firebase.database().ref('/bookings').on('value', function(snapshot) {
+      var requests = snapshot.val();
+      angular.forEach(requests, function(value) {
+        if (value.user===$cookies.get('userId')) {
+          $scope.lists.push(value);
+        }
+      });
+    });
+
+    console.log($scope.lists);
+
+
 }])
