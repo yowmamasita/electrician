@@ -242,11 +242,6 @@ function ($scope, $stateParams, $state, $cookies) {
           ];
         }
 
-        $scope.booking.bidders = [
-          {booking_id: "1541881527077", price: "9700", user: "assoc", winner: "pending"},
-          {booking_id: "1541881527077", price: "9600", user: "assoc_meralco", winner: "pending"}
-        ];
-
         function dynamicSort(property) {
           var sortOrder = 1;
           if(property[0] === "-") {
