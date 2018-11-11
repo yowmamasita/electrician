@@ -238,9 +238,14 @@ function ($scope, $stateParams, $state, $cookies) {
         } catch(e) {
           $scope.booking.bidders = [
             {booking_id: "1541881527077", price: "9700", user: "assoc", winner: "pending"},
-            {booking_id: "1541881527077", price: "9700", user: "assoc_meralco", winner: "pending"}
+            {booking_id: "1541881527078", price: "9600", user: "assoc_meralco", winner: "pending"}
           ];
         }
+
+        $scope.booking.bidders = [
+          {booking_id: "1541881527077", price: "9600", user: "assoc", winner: "pending"},
+          {booking_id: "1541881527078", price: "9700", user: "assoc_meralco", winner: "pending"}
+        ];
 
         function dynamicSort(property) {
           var sortOrder = 1;
