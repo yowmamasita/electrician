@@ -7,8 +7,10 @@
         <p style="white-space:normal;">
           {{ booking.package.name }}
         </p>
+        <p ng-bind="booking.customer_id">
+        </p>
         <p>
-          P {{ booking.package.price | number | peso }}
+          {{ booking.package.price | number | peso }}
         </p>
 
         <span class="{{booking.status}}">{{ booking.status }}</span>
