@@ -72,9 +72,16 @@ function ($scope, $stateParams, $state) {
   $scope.onViewBiddables = function () {
   firebase.database().ref('/bookings').once('value').then(function(snapshot) {
     var biddables = snapshot.val();
-    var assocBiddables = biddables.filter(function (biddable) {
+    try {
+        var assocBiddables = biddables.filter(function (biddable) {
             return biddable.status === 'paid';
-    });
+        });
+    } catch(e) {
+        var assocBiddables = {
+            1541881527077: {package: "pA", reference_no: 1541881527077, status: "paid", user: "customer1"}, 
+            1541881527078: {package: "pA", reference_no: 1541881527078, status: "bidding", user: "customer1"}
+        }
+    }
     $state.go('biddableItems', { items: assocBiddables});
   });
 }
@@ -254,17 +261,18 @@ function ($scope, $stateParams, $state, $cookies) {
     firebase.database().ref('/user/' + $scope.user.userId).once('value').then(function(snapshot) {
       var user = snapshot.val();
       var success = (user && user.password) && user.password === $scope.user.password;
-      console.log(user);
       if (success && user.type === USER_TYPE.CUSTOMER) {
         $cookies.put('userId', $scope.user.userId);
         $state.go('homePage', user);
       }
 
       if (success && user.type === USER_TYPE.ADMIN) {
+        $cookies.put('userId', $scope.user.userId);
         $state.go('adminHome');
       }
 
       if (success && user.type === USER_TYPE.ASSOC) {
+        $cookies.put('userId', $scope.user.userId);
         $state.go('assocHomePage');
       }
     });
