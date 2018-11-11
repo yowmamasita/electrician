@@ -38,7 +38,7 @@ function ($scope, $stateParams, $state, $cookies) {
         });
       }
     }
- 
+
     });
 
   };
@@ -55,7 +55,7 @@ function ($scope, $stateParams, $state, $cookies) {
 
 		});
 	});
- 
+
 
 }])
 
@@ -79,7 +79,7 @@ function ($scope, $stateParams, $state) {
         });
     } catch(e) {
         var assocBiddables = {
-            1541881527077: {package: "pA", reference_no: 1541881527077, status: "paid", user: "customer1"}, 
+            1541881527077: {package: "pA", reference_no: 1541881527077, status: "paid", user: "customer1"},
             1541881527078: {package: "pA", reference_no: 1541881527078, status: "bidding", user: "customer1"}
         }
     }
@@ -221,6 +221,13 @@ function ($scope, $stateParams, $state, $ionicLoading, $timeout) {
         $scope.bids.push(bid);
       }
     });
+
+    // sort bids by price in asc order
+    $scope.bids.sort(function (a, b) {
+      return parseFloat(a.price) - parseFloat(b.price);
+    });
+
+    console.log($scope.bids);
   });
 
   $scope.selectedStatus = {status: null};
@@ -250,7 +257,7 @@ function ($scope, $stateParams, $state, $ionicLoading, $timeout) {
   };
 
   $scope.isBidding = function () {
-    return $scope.selectedStatus.status == 'bidding';
+    return $scope.booking.status == 'bidding';
   }
 
 }])
@@ -347,12 +354,12 @@ function ($scope, $stateParams, $state, $cookies) {
 
       var sorted = $scope.booking.bidders.sort(dynamicSort("price"));
       console.log('sorted', sorted);
-        
+
         console.log('bidders', $scope.booking.bidders);
       });
     }
     foundBidders();
-  
+
     console.log('asd',$scope.booking);
 
 }])

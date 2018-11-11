@@ -20,9 +20,11 @@
     <div ng-if="isBidding()">
       <h5 id="bookingsDetailPage-heading6" style="color:#000000;">Bids</h5>
       <ion-list id="bookingsDetailPage-list8">
-        <ion-item id="bookingsDetailPage-list-item33" ng-repeat="bid in bids">{{bid.assoc_details.email}} <span ng-if="bid.winner=='true'"><i>Winner</i></span></ion-item>
+        <ion-item id="bookingsDetailPage-list-item33" ng-repeat="bid in bids">
+          {{bid.assoc_details.email}} - {{bid.price | number | peso}}
+        </ion-item>
       </ion-list>
-      <button id="bookingsDetailPage-button18" class="button button-calm button-block" ng-click="onUpdateBookingStatus()">Save</button>
     </div>
+      <button id="bookingsDetailPage-button18" class="button button-calm button-block" ng-click="onUpdateBookingStatus()">Save</button>
   </ion-content>
 </ion-view>
