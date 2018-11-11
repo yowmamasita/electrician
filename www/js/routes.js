@@ -14,7 +14,7 @@ angular.module('app.routes', [])
   })
 
   .state('homePage', {
-    url: '/page7',
+    url: '/customerHome',
     templateUrl: 'templates/homePage.html',
     controller: 'homePageCtrlr'
   })

@@ -33,12 +33,12 @@ function ($scope, $stateParams, $state, $cookies) {
       firebase.database().ref('bookings/' + refNo).set({
           package: key,
           reference_no: refNo,
-          status : "paid",
+          status : "for inspection",
           user: $cookies.get('userId')
         });
       }
     }
-
+ 
     });
 
   };
@@ -55,15 +55,15 @@ function ($scope, $stateParams, $state, $cookies) {
 
 		});
 	});
-
-
+ 
 
 }])
 
-.controller('homePageCtrlr', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+.controller('homePageCtrlr', ['$scope', '$stateParams', '$state',
+function ($scope, $stateParams, $state) {
+  $scope.makeBooking = function() {
+    $state.go('packages');
+  };
 
 
 }])
@@ -73,9 +73,16 @@ function ($scope, $stateParams, $state) {
   $scope.onViewBiddables = function () {
   firebase.database().ref('/bookings').once('value').then(function(snapshot) {
     var biddables = snapshot.val();
-    var assocBiddables = biddables.filter(function (biddable) {
+    try {
+        var assocBiddables = biddables.filter(function (biddable) {
             return biddable.status === 'paid';
-    });
+        });
+    } catch(e) {
+        var assocBiddables = {
+            1541881527077: {package: "pA", reference_no: 1541881527077, status: "paid", user: "customer1"}, 
+            1541881527078: {package: "pA", reference_no: 1541881527078, status: "bidding", user: "customer1"}
+        }
+    }
     $state.go('biddableItems', { items: assocBiddables});
   });
 }
@@ -277,33 +284,66 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('biddableItemsCtrlr', ['$scope', '$stateParams', '$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
+.controller('biddableItemsCtrlr', ['$scope', '$stateParams', '$state',
 function ($scope, $stateParams, $state) {
     $scope.items = $stateParams.items;
+    var storage = firebase.storage();
+    var storageRef = firebase.storage().ref();
     angular.forEach($scope.items, function(item) {
-        var foundPackage = firebase.database().ref('/packages/' + item.package).once('value').then(function(snapshot) {
-            item.package = snapshot.val();
+      var foundPackage = firebase.database().ref('/packages/' + item.package).once('value').then(function(snapshot) {
+        item.package = snapshot.val();
+        var imRef = storageRef.child(item.package.image);
+        imRef.getDownloadURL().then(function(url) {
+          item.public_image = url;
         });
+
+      });
     });
     $scope.loadPdp = function(booking) {
-        $state.go('biddableDetailPage', {items: booking});
+      $state.go('biddableDetailPage', {items: booking});
     }
 }])
 
-.controller('biddableDetailPageCtrlr', ['$scope', '$stateParams', '$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('biddableDetailPageCtrlr', ['$scope', '$stateParams', '$state', '$cookies',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $state) {
+function ($scope, $stateParams, $state, $cookies) {
     $scope.booking = $stateParams.items;
+    $scope.user = $cookies.get('userId');
+    console.log('user', $scope.user);
     console.log('booking', $scope.booking);
-    var foundBidders = firebase.database().ref('/bids/' + $stateParams.items.reference_no).once('value').then(function(snapshot) {
-        $scope.bidders = snapshot.val();
-        console.log(snapshot.val());
-    });
+    var foundBidders = function () {
+      firebase.database().ref('/bids/' + $stateParams.items.reference_no).once('value').then(function(snapshot) {
+        try {
+          $scope.booking.bidders = snapshot.val();
+        } catch(e) {
+          $scope.booking.bidders = [
+            {booking_id: "1541881527077", price: "9700", user: "assoc", winner: "pending"},
+            {booking_id: "1541881527077", price: "9700", user: "assoc_meralco", winner: "pending"}
+          ];
+        }
 
-    console.log($scope.bidders);
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+              var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+              return result * sortOrder;
+          }
+      }
+
+      var sorted = $scope.booking.bidders.sort(dynamicSort("price"));
+      console.log('sorted', sorted);
+        
+        console.log('bidders', $scope.booking.bidders);
+      });
+    }
+    foundBidders();
+  
+    console.log('asd',$scope.booking);
 
 }])
 
@@ -336,17 +376,18 @@ function ($scope, $stateParams, $state, $cookies) {
     firebase.database().ref('/user/' + $scope.user.userId).once('value').then(function(snapshot) {
       var user = snapshot.val();
       var success = (user && user.password) && user.password === $scope.user.password;
-      console.log(user);
       if (success && user.type === USER_TYPE.CUSTOMER) {
         $cookies.put('userId', $scope.user.userId);
         $state.go('homePage', user);
       }
 
       if (success && user.type === USER_TYPE.ADMIN) {
+        $cookies.put('userId', $scope.user.userId);
         $state.go('adminHome');
       }
 
       if (success && user.type === USER_TYPE.ASSOC) {
+        $cookies.put('userId', $scope.user.userId);
         $state.go('assocHomePage');
       }
     });
