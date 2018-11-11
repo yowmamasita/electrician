@@ -33,7 +33,7 @@ function ($scope, $stateParams, $state, $cookies) {
       firebase.database().ref('bookings/' + refNo).set({
           package: key,
           reference_no: refNo,
-          status : "paid",
+          status : "for inspection",
           user: $cookies.get('userId')
         });
       }
