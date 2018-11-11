@@ -13,7 +13,7 @@
       </div>
       <ion-item class="item-icon-left" id="biddableDetailPage-list-item42" ng-repeat="bidder in booking.bidders">
         <i class="icon No Icon" ng-show="bidder.user != user"></i>
-        <i class="icon ion-ios-people" ng-show="bidder.user == user"></i>{{bidder.user}}
+        <i class="icon ion-ios-people" ng-show="bidder.user == user"></i>{{bidder.user | uppercase}}
         <span class="item-note" ng-show="bidder.user == user">Current Ranking</span>
       </ion-item>
     </div>
