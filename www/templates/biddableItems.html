@@ -5,6 +5,7 @@
                 id="biddableItems-list-item36"
                 ng-repeat="biddable in items"
                 ng-click="loadPdp(biddable)">
+        <image ng-cloak ng-src="{{biddable.public_image}}" width="100%"></image>    
         <h2>Ref#: {{biddable.reference_no}}</h2>
         <p style="white-space:normal;">{{biddable.package.name}}
           <br>{{biddable.package.price | number | peso}}</p>

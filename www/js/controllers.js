@@ -202,18 +202,23 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('biddableItemsCtrlr', ['$scope', '$stateParams', '$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
+.controller('biddableItemsCtrlr', ['$scope', '$stateParams', '$state',
 function ($scope, $stateParams, $state) {
     $scope.items = $stateParams.items;
+    var storage = firebase.storage();
+    var storageRef = firebase.storage().ref();
     angular.forEach($scope.items, function(item) {
-        var foundPackage = firebase.database().ref('/packages/' + item.package).once('value').then(function(snapshot) {
-            item.package = snapshot.val();
+      var foundPackage = firebase.database().ref('/packages/' + item.package).once('value').then(function(snapshot) {
+        item.package = snapshot.val();
+        var imRef = storageRef.child(item.package.image);
+        imRef.getDownloadURL().then(function(url) {
+          item.public_image = url;
         });
+
+      });
     });
     $scope.loadPdp = function(booking) {
-        $state.go('biddableDetailPage', {items: booking});
+      $state.go('biddableDetailPage', {items: booking});
     }
 }])
 
