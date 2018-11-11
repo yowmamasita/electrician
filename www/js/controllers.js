@@ -218,7 +218,7 @@ function ($scope, $stateParams, $state) {
       });
     });
     $scope.loadPdp = function(booking) {
-        $state.go('biddableDetailPage', {items: booking});
+      $state.go('biddableDetailPage', {items: booking});
     }
 }])
 
