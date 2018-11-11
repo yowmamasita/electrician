@@ -254,9 +254,10 @@ function ($scope, $stateParams, $state, $ionicLoading, $timeout) {
       $ionicLoading.hide();
     }, 3000);
 
+    $scope.booking = updateBooking;
 
     if ($scope.selectedStatus.status === 'bidding') {
-      $state.go('setBidding', {booking: booking});// todo: pass booking ref_no
+      $state.go('setBidding', {booking: $scope.booking});// todo: pass booking ref_no
     }
   };
 
